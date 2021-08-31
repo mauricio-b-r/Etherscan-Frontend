@@ -1,25 +1,42 @@
-import logo from './logo.png';
-import './App.css';
+import "./App.css";
+import * as React from "react";
 
-function App() {
+import { Box, Tab, Tabs } from "@material-ui/core";
+
+import AddressSearch from "./components/AddressSearch";
+import BlockchainData from "./components/BlockchainData";
+import BlockTransactionsData from "./components/BlockTransactionsData";
+import TabPanel from "./components/TabPanel";
+
+export default function App() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (evt, new_value) => {
+    setValue(new_value);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          centered
         >
-          Learn React
-        </a>
-      </header>
+          <Tab label="Blockchain data" id="blockchain-tab-1" />
+          <Tab label="Search transactions by address" id="address-tab-2" />
+          <Tab label="Block Transactions" id="block-transactions-tab-2" />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <BlockchainData />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <AddressSearch />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <BlockTransactionsData />
+      </TabPanel>
     </div>
   );
 }
-
-export default App;
