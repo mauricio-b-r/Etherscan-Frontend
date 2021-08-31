@@ -40,19 +40,23 @@ function TransactionModal({ transaction }) {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    setLoading(true);
-    const params = { tx_hash: transaction };
-    axios
-      .get("blocks/transaction-hash", { params })
-      .then((response) => {
-        const transaction_data = response.data;
-        setTransactionInfo(transaction_data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setTransactionInfo({});
-      })
-      .finally(() => setLoading(false));
+    if (typeof transaction === "string") {
+      setLoading(true);
+      const params = { tx_hash: transaction };
+      axios
+        .get("blocks/transaction-hash", { params })
+        .then((response) => {
+          const transaction_data = response.data;
+          setTransactionInfo(transaction_data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setTransactionInfo({});
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setTransactionInfo(transaction);
+    }
   }, []);
   const body = (
     <div style={modalStyle} className={classes.paper}>
